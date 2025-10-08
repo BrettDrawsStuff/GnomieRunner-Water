@@ -20,7 +20,7 @@ let gameState = "title";
 // Background scroll variables
 let bgX1;
 let bgX2;
-let bgSpeed = 3;
+let bgSpeed = 3.5;
 
 let pixelFont;
 
@@ -308,7 +308,7 @@ class Player {
 
     this.vy = 0;
     this.gravity = 0.95;
-    this.jumpStrength = 17.75;
+    this.jumpStrength = 15;
     this.jumpCount = 0;
     this.maxJumps = 2;
 
@@ -423,7 +423,7 @@ class Player {
 // ------------------- SEGMENT 4: OBSTACLE CLASS -------------------
 class Obstacle {
   constructor() {
-    this.speed = 3;
+    this.speed = 3.5;
     let r = random();
 
     if (r < 0.33) {
@@ -431,7 +431,7 @@ class Obstacle {
       this.w = 32;
       this.h = 32;
       this.x = width;
-      this.y = groundY - this.h + 5;
+      this.y = groundY - this.h + 9;
     } else if (r < 0.66) {
       this.type = "tall";
       this.w = 35;
@@ -486,7 +486,7 @@ class Collectible {
     this.r = 18;
     this.x = width;
     this.y = random(groundY - 150, groundY - 30);
-    this.speed = 3;
+    this.speed = 3.5;
   }
 
   update() {
