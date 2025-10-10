@@ -90,7 +90,7 @@ function draw() {
     drawGame();
   } else if (gameState === "gameOver") {
     drawGameOver();
-    if (millis() - gameOverTime > 3000) {
+    if (millis() - gameOverTime > 5000) {
       gameState = "title";
       if (!playButton) createPlayButton();
     }
