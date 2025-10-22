@@ -14,6 +14,8 @@ let runFrames = [], jumpFrame, doubleJumpFrame, fallFrame;
 let collectibleImg;
 let gameOverImg;
 
+let birdImg;
+
 let playButton;
 let gameState = "title";
 
@@ -41,6 +43,7 @@ function preload() {
   playBtnImg = loadImage('play_button.png');
   gameOverImg = loadImage('gameover.gif');
   pixelFont = loadFont('pixelFont.ttf');
+  birdImg = loadImage('bird.gif');
 
   // Player run frames (precompute _drawWidth and _drawHeight)
   runFrames = [];
@@ -90,7 +93,7 @@ function draw() {
     drawGame();
   } else if (gameState === "gameOver") {
     drawGameOver();
-    if (millis() - gameOverTime > 5000) {
+    if (millis() - gameOverTime > 6000) {
       gameState = "title";
       if (!playButton) createPlayButton();
     }
@@ -197,7 +200,7 @@ function drawGame() {
   // Draw block/tall obstacles and handle collisions
   for (let obs of obstacles) {
     obs.update();
-    if (!obs.offscreen() && (obs.type === "block" || obs.type === "tall")) {
+    if (!obs.offscreen() && (obs.type === "block" || obs.type === "tall" || obs.type === "bird")) {
       obs.show();
       if (obs.hits(player)) triggerGameOver();
     }
@@ -432,12 +435,19 @@ class Obstacle {
       this.h = 32;
       this.x = width;
       this.y = groundY - this.h + 9;
-    } else if (r < 0.66) {
+    } else if (r < 0.5) {
       this.type = "tall";
       this.w = 35;
       this.h = 100;
       this.x = width;
       this.y = groundY - this.h + 5;
+      } else if (r < 0.6) {
+      this.type = "bird";
+      this.w = 35;
+      this.h = 30;
+      this.x = width;
+      this.y = groundY - this.h - random(120, 175); // up in the air
+      this.speed = 6; // slightly faster
     } else {
       this.type = "hole";
       this.w = int(random(50, 120));
@@ -454,8 +464,9 @@ class Obstacle {
   show() {
     if (this.type === "block" && blockImg) image(blockImg, this.x, this.y, this.w, this.h);
     else if (this.type === "tall" && tallImg) image(tallImg, this.x, this.y, this.w, this.h);
+    else if (this.type === "bird" && birdImg) image(birdImg, this.x, this.y, this.w, this.h);
     else if (this.type === "hole" && holeImg) image(holeImg, this.x, this.y, this.w, this.h);
-    else if (this.type === "block" || this.type === "tall") {
+    else if (this.type === "block" || this.type === "tall" || this.type === "bird") {
       push();
       fill(200, 50, 50);
       stroke(0);
